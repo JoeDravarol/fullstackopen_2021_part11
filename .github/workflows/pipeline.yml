@@ -21,13 +21,12 @@ jobs:
       - uses: actions/setup-node@v1
         with:
           node-version: '12.x'
-        # Checkout Server repo
-      - uses: actions/checkout@v2
-        with:
-          path: server
       - name: install server dependencies
+        working-directory: ./server
         run: npm install
       - name: lint server
+        working-directory: ./server
         run: npm run eslint
       - name: server integration test
+        working-directory: ./server
         run: CI=true npm test
