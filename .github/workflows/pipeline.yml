@@ -21,6 +21,7 @@ jobs:
       - uses: actions/setup-node@v1
         with:
           node-version: '12.x'
+        # Server
       - name: install server dependencies
         working-directory: ./server
         run: npm install
@@ -30,3 +31,19 @@ jobs:
       - name: server integration test
         working-directory: ./server
         run: CI=true npm test
+        # Client
+      - name: install client dependencies
+        working-directory: ./client
+        run: npm install
+      - name: lint client
+        working-directory: ./client
+        run: npm run eslint
+      - name: build client
+        working-directory: ./client
+        run: npm run build
+      - name: e2e tests
+        uses: cypress-io/github-action@v2.2.7
+        with:
+          command: npm run test:e2e
+          start: cd server && npm run start:test
+          wait-on: http://localhost:3000
