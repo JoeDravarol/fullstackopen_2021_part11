@@ -11,18 +11,16 @@ on:
 jobs:
   simple_deployment_pipeline:
     runs-on: ubuntu-18.04
+    env:
+      MONGODB_URI: ${{ secrets.MONGODB_URI }}
+      TEST_MONGODB_URI: ${{ secrets.TEST_MONGODB_URI }}
+      PORT: ${{ secrets.PORT }}
+      SECRET: ${{ secrets.SECRET }}
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v1
         with:
           node-version: '12.x'
-      - name: Make .env file
-        uses: SpicyPizza/create-envfile@v1
-        with:
-          envkey_MONGODB_URI: ${{ secrets.MONGODB_URI }}
-          envkey_TEST_MONGODB_URI: ${{ secrets.TEST_MONGODB_URI }}
-          envkey_PORT: ${{ secrets.PORT }}
-          envkey_SECRET: ${{ secrets.SECRET }}
         # Server
       - name: install server dependencies
         working-directory: ./server
@@ -48,5 +46,7 @@ jobs:
         with:
           working-directory: ./client
           command: npm run test:e2e
-          start: npm run start:test-server
-          wait-on: http://localhost:3000
+          start: |
+            npm run start
+            npm run start:test-server
+          wait-on: 'http://localhost:3000'
