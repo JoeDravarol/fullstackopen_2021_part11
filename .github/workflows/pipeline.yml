@@ -16,6 +16,13 @@ jobs:
       - uses: actions/setup-node@v1
         with:
           node-version: '12.x'
+      - name: Make .env file
+        uses: SpicyPizza/create-envfile@v1
+        with:
+          envkey_MONGODB_URI: ${{ secrets.MONGODB_URI }}
+          envkey_TEST_MONGODB_URI: ${{ secrets.TEST_MONGODB_URI }}
+          envkey_PORT: ${{ secrets.PORT }}
+          envkey_SECRET: ${{ secrets.SECRET }}
         # Server
       - name: install server dependencies
         working-directory: ./server
@@ -36,13 +43,6 @@ jobs:
       - name: build client
         working-directory: ./client
         run: npm run build
-      - name: Make .env file
-        uses: SpicyPizza/create-envfile@v1
-        with:
-          envkey_MONGODB_URI: ${{ secrets.MONGODB_URI }}
-          envkey_TEST_MONGODB_URI: ${{ secrets.TEST_MONGODB_URI }}
-          envkey_PORT: ${{ secrets.PORT }}
-          envkey_SECRET: ${{ secrets.SECRET }}
       - name: e2e tests
         uses: cypress-io/github-action@v2.2.7
         with:
