@@ -1,0 +1,32 @@
+name: Deployment pipeline
+
+on:
+  push:
+    branches:
+      - main
+  pull_request: [main]
+    branches: [main]
+    types: [opened, synchronize]
+
+jobs:
+  simple_deployment_pipeline:
+    runs-on: ubuntu-18.04
+    env:
+      MONGODB_URI: ${{ secrets.MONGODB_URI }}
+      TEST_MONGODB_URI: ${{ secrets.TEST_MONGODB_URI }}
+      PORT: ${{ secrets.PORT }}
+      SECRET: ${{ secrets.SECRET }}
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: '12.x'
+      - name: Checkout server repo
+        with:
+          path: server
+      - name: install serevr dependencies
+        run: npm install
+      - name: lint server
+        run: npm run eslint
+      - name: server integration test
+        run: CI=true npm test
