@@ -11,11 +11,6 @@ on:
 jobs:
   simple_deployment_pipeline:
     runs-on: ubuntu-18.04
-    env:
-      MONGODB_URI: ${{ secrets.MONGODB_URI }}
-      TEST_MONGODB_URI: ${{ secrets.TEST_MONGODB_URI }}
-      PORT: ${{ secrets.PORT }}
-      SECRET: ${{ secrets.SECRET }}
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v1
@@ -41,6 +36,13 @@ jobs:
       - name: build client
         working-directory: ./client
         run: npm run build
+      - name: Make .env file
+        uses: SpicyPizza/create-envfile@v1
+        with:
+          envkey_MONGODB_URI: ${{ secrets.MONGODB_URI }}
+          envkey_TEST_MONGODB_URI: ${{ secrets.TEST_MONGODB_URI }}
+          envkey_PORT: ${{ secrets.PORT }}
+          envkey_SECRET: ${{ secrets.SECRET }}
       - name: e2e tests
         uses: cypress-io/github-action@v2.2.7
         with:
