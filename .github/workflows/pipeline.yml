@@ -22,6 +22,7 @@ jobs:
         with:
           node-version: '12.x'
       - name: Checkout server repo
+        uses: actions/checkout@v2
         with:
           path: server
       - name: install serevr dependencies
