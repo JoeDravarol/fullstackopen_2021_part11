@@ -45,6 +45,7 @@ jobs:
         uses: cypress-io/github-action@v2
         with:
           working-directory: ./client
+          browser: firefox
           command: npm run test:e2e
           start: npm run start-server
           wait-on: http://localhost:3003
