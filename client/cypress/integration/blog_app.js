@@ -65,7 +65,8 @@ describe('Blog app', function () {
         cy.createBlog({
           title: 'another blog e2e',
           author: 'cypress',
-          url: 'http://another.com'
+          url: 'http://another.com',
+          likes: 0
         })
       })
 
