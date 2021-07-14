@@ -30,12 +30,14 @@ Cypress.Commands.add('login', ({ username, password }) => {
     }).then(({ body }) => {
       window.localStorage.setItem('loggedBlogappUser', JSON.stringify(body))
       cy.visit('http://localhost:3003')
+      cy.task('log', 'login ' + JSON.parse(window.localStorage.getItem('loggedBlogappUser')).token)
     })
   })
 })
 
 Cypress.Commands.add('createBlog', ({ title, author, url, likes }) => {
   cy.window().then(window => {
+    cy.task('log', 'createBlog ' + JSON.parse(window.localStorage.getItem('loggedBlogappUser')).token)
     cy.request({
       url: 'http://localhost:3003/api/blogs',
       method: 'POST',
