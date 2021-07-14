@@ -42,7 +42,7 @@ jobs:
         working-directory: ./server
         run: npm run build:ui
       - name: e2e tests
-        uses: cypress-io/github-action@v2.2.7
+        uses: cypress-io/github-action@v2
         with:
           working-directory: ./client
           command: npm run test:e2e
