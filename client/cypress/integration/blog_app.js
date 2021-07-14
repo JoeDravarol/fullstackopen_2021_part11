@@ -1,5 +1,5 @@
-describe('Blog app', function() {
-  beforeEach(function() {
+describe('Blog app', function () {
+  beforeEach(function () {
     cy.request('POST', 'http://localhost:3003/api/testing/reset')
     const user = {
       name: 'tester',
@@ -7,16 +7,16 @@ describe('Blog app', function() {
       password: 'testing'
     }
     cy.request('POST', 'http://localhost:3003/api/users', user)
-    cy.visit('http://localhost:3000')
+    cy.visit('http://localhost:3003')
   })
 
-  it('Login form is shown', function() {
+  it('Login form is shown', function () {
     cy.contains('Log in to application')
     cy.contains('login')
   })
 
-  describe('Login', function() {
-    it('succeeds with correct credentials', function() {
+  describe('Login', function () {
+    it('succeeds with correct credentials', function () {
       cy.get('#username')
         .type('tester')
 
@@ -29,7 +29,7 @@ describe('Blog app', function() {
       cy.contains('tester logged in')
     })
 
-    it('fails with wrong credentials', function() {
+    it('fails with wrong credentials', function () {
       cy.get('#username')
         .type('tester')
 
@@ -43,12 +43,12 @@ describe('Blog app', function() {
     })
   })
 
-  describe('When logged in', function() {
-    beforeEach(function() {
+  describe('When logged in', function () {
+    beforeEach(function () {
       cy.login({ username: 'tester', password: 'testing' })
     })
 
-    it('A blog can be created', function() {
+    it('A blog can be created', function () {
       cy.contains('create new blog')
         .click()
 
@@ -60,8 +60,8 @@ describe('Blog app', function() {
       cy.contains('a blog created by cypress')
     })
 
-    describe('and a blog exists', function() {
-      beforeEach(function() {
+    describe('and a blog exists', function () {
+      beforeEach(function () {
         cy.createBlog({
           title: 'another blog e2e',
           author: 'cypress',
@@ -69,7 +69,7 @@ describe('Blog app', function() {
         })
       })
 
-      it('it can be liked', function() {
+      it('it can be liked', function () {
         cy.contains('another blog e2e')
           .click()
 
@@ -80,7 +80,7 @@ describe('Blog app', function() {
         cy.contains('likes 1')
       })
 
-      it('it can be deleted by the user who created it', function() {
+      it('it can be deleted by the user who created it', function () {
         cy.contains('another blog e2e')
           .click()
 
@@ -91,7 +91,7 @@ describe('Blog app', function() {
         cy.contains('another blog e2e').should('not.exist')
       })
 
-      it('it cannot be deleted by other user', function() {
+      it('it cannot be deleted by other user', function () {
         const user = {
           name: 'another user',
           username: 'another',
@@ -114,8 +114,8 @@ describe('Blog app', function() {
       })
     })
 
-    describe('and several blogs exist', function() {
-      beforeEach(function() {
+    describe('and several blogs exist', function () {
+      beforeEach(function () {
         cy.createBlog({
           title: 'first blog', author: 'cypress1',
           url: 'http://first.com/', likes: 1
@@ -130,7 +130,7 @@ describe('Blog app', function() {
         })
       })
 
-      it('it ordered blogs according to likes (most likes first)', function() {
+      it('it ordered blogs according to likes (most likes first)', function () {
         cy.get('.blogs a').first().contains('third blog')
         cy.get('.blogs a').eq(1).contains('second blog')
         cy.get('.blogs a').eq(2).contains('first blog')
