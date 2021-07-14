@@ -62,20 +62,11 @@ describe('Blog app', function () {
 
     describe('and a blog exists', function () {
       beforeEach(function () {
-        const blog = {
+        cy.createBlog({
           title: 'another blog e2e',
           author: 'cypress',
-          url: 'http://another.com',
-        }
-        cy.request({
-          url: 'http://localhost:3003/api/blogs',
-          method: 'POST',
-          body: { ...blog },
-          headers: {
-            'Authorization': `bearer ${JSON.parse(localStorage.getItem('loggedBlogappUser')).token}`
-          }
+          url: 'http://another.com'
         })
-        cy.visit('http://localhost:3003')
       })
 
       it('it can be liked', function () {
