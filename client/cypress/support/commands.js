@@ -40,7 +40,7 @@ Cypress.Commands.add('createBlog', ({ title, author, url, likes }) => {
     headers: {
       'Authorization': `bearer ${JSON.parse(localStorage.getItem('loggedBlogappUser')).token}`
     }
+  }).then(() => {
+    cy.visit('http://localhost:3003')
   })
-
-  cy.visit('http://localhost:3003')
 })
