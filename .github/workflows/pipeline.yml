@@ -23,13 +23,10 @@ jobs:
           node-version: '12.x'
         # Server
       - name: install server dependencies
-        working-directory: ./server
         run: npm install
       - name: lint server
-        working-directory: ./server
         run: npm run eslint
       - name: server integration test
-        working-directory: ./server
         run: CI=true npm test
         # Client
       - name: install client dependencies
@@ -39,7 +36,6 @@ jobs:
         working-directory: ./client
         run: npm run eslint
       - name: build client
-        working-directory: ./server
         run: npm run build:ui
       # Skipped e2e test due to unfixable error
       #- name: e2e tests
