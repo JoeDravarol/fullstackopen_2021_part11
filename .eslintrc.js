@@ -1,18 +1,25 @@
 module.exports = {
   'env': {
     'commonjs': true,
-    'es2021': true,
+    'es6': true,
     'node': true,
-    'jest': true
+    'jest': true,
+    "browser": true,
+    "node": true,
+    "cypress/globals": true
   },
-  'extends': 'eslint:recommended',
+  'extends': ['eslint:recommended', 'plugin:react/recommended'],
   'parserOptions': {
     'ecmaVersion': 12
   },
+  'plugins': ['react', 'jest', 'cypress'],
   'rules': {
     'indent': [
       'error',
-      2
+      2,
+      {
+        'SwitchCase': 1
+      }
     ],
     'linebreak-style': [
       'error',
@@ -38,6 +45,12 @@ module.exports = {
         'after': true
       }
     ],
-    'no-console': 0
+    'no-console': 0,
+    'react/prop-types': 0
+  },
+  'settings': {
+    'react': {
+      'version': 'detect'
+    }
   }
 }
