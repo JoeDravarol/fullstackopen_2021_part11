@@ -49,3 +49,12 @@ jobs:
       #    command: npm run test:e2e
       #    start: npm run start-server
       #    wait-on: http://localhost:3003
+      - name: deploy to heroku
+        if: ${{ github.event_name == 'push' && !contains(join(github.event.commits.*.message, ' '), '#skip') }}
+        with:
+          heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
+          heroku_app_name: "fullstackopen-blog-app"
+          heroku_email: ${{ secrets.EMAIL }}
+          healthCheck: "https://fullstackopen-blog-app.herokuapp.com/health"
+          checkstring: "ok"
+          rollbackonhealthcheckfailed: true
