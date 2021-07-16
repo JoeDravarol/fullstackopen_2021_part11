@@ -3,7 +3,7 @@ Web application allowing user to create, remove, like and comment on a blog.
 
 The purpose of this repository is to build a CI/CD-pipeline using Github actions to lint, test and deploy the application to Heroku as part of [Full Stack open's curriculum exercise](https://fullstackopen.com/en/part11/expanding_further#exercises-11-20-11-22).
 
-[DEMO](fullstackopen-blog-app.herokuapp.com/)
+[DEMO](https://fullstackopen-blog-app.herokuapp.com/)
 
 * Demo Login credentials:
   * **username**: Artos
