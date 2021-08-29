@@ -8,6 +8,7 @@ import LoginForm from './components/LoginForm'
 import BlogForm from './components/BlogForm'
 import Notification from './components/Notification'
 import Togglable from './components/Togglable'
+import SignUpForm from './components/SignUpForm'
 
 import { setNotification } from './reducers/notificationReducer'
 import { initializeBlogs, createBlog } from './reducers/blogReducer'
@@ -16,6 +17,7 @@ import Users from './components/Users'
 import User from './components/User'
 import Menu from './components/Menu'
 import BlogList from './components/BlogList'
+import userService from './services/users'
 
 const App = () => {
   const [username, setUsername] = useState('')
@@ -34,7 +36,7 @@ const App = () => {
   }, [])
 
   const displayNotificationWith = (message, status='success') => {
-    const seconds = 3
+    const seconds = 5
     dispatch( setNotification({ message, status }, seconds) )
   }
 
@@ -45,7 +47,27 @@ const App = () => {
 
     setUsername('')
     setPassword('')
+  }
 
+  const handleSignUp = async ({ username, name, password }) => {
+    try {
+      await userService.create({ 
+        username,
+        name,
+        password,
+      })
+      dispatch( login(username, password) )
+    } catch (error) {
+      const message = error.response.data.error
+      const uniqueUsernameMessage = `The username: '${username}' has already been taken`
+      const uniqueUsernameError = 'expected `username` to be unique'
+
+      if ( message.includes(uniqueUsernameError) ) {
+        return displayNotificationWith(uniqueUsernameMessage, 'error')
+      }
+
+      displayNotificationWith(message, 'error')
+    }
   }
 
   const handleInputOnChange = (callback) => {
@@ -69,6 +91,7 @@ const App = () => {
   }
 
   const blogFormRef = useRef()
+  const signUpFormRef = useRef()
 
   // Sort in descending order
   const sortedBlogsByLikes = blogs.sort((a,b) => b.likes - a.likes)
@@ -87,6 +110,9 @@ const App = () => {
           handleUsernameChange={handleInputOnChange(setUsername)}
           handlePasswordChange={handleInputOnChange(setPassword)}
         />
+        <Togglable buttonLabel='Sign Up' ref={signUpFormRef}>
+          <SignUpForm handleSignUp={handleSignUp} />
+        </Togglable>
       </Container>
     )
   }
